@@ -26,13 +26,13 @@ COMPLEMENTS[ord('N')] = 'N'
 
 class BasFile (object):
 
-    def __init__ (self, filename):
+    def __init__ (self, filename, readType='Raw'):
 
         logger.debug("creating BasFile object")
 
-        self._filename   = filename
-        self._infile     = h5py.File (filename, 'r')
-        self._top        = h5py.Group (self._infile, '/')
+ #       self._filename   = filename
+        self._top     = h5py.File (filename, 'r')
+#        self._top        = h5py.Group (self._infile, '/')
 
         self._basecalls  = self._top["PulseData/BaseCalls"]
         self._ZMW        = self._top["PulseData/BaseCalls/ZMW"]
@@ -64,7 +64,7 @@ class BasFile (object):
         self._strobeNumber = int(match.group(2))
         
     def __del__ (self):
-        self._infile.close()
+        self._top.close()
 
     def movieName (self):
         return self._top["ScanData/RunInfo"].attrs["MovieName"]
